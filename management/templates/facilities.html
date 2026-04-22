@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Sports Club - List of all facilities
+{% endblock %}
+
+
+{% block content %}
+  <div>
+    <h1>Facilities</h1>
+    <ul>
+      {% for x in facilities %}
+        <li>{{ x.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+
