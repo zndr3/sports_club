@@ -10,6 +10,14 @@ def facilities(request):
   }
   return HttpResponse(template.render(context, request))
 
+def booking_list(request):
+  bookings = Booking.objects.select_related('facid', 'memid').all()
+  template = loader.get_template('booking_list.html')
+  context = {
+    'bookings': bookings,
+  }
+  return HttpResponse(template.render(context, request))
+
 def main(request):
   template = loader.get_template('main.html')
   return HttpResponse(template.render())
