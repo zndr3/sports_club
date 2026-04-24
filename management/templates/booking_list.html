@@ -1,25 +1,15 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="row mb-4">
-    <div class="col">
-        <h2>Schedule & Bookings</h2>
-    </div>
-    <div class="col text-end">
-        <a href="{% url 'facilities' %}" class="btn btn-dark">New Booking</a>
-    </div>
-</div>
 
-<div class="list-group shadow-sm">
-    {% for booking in bookings %}
-    <div class="list-group-item list-group-item-action py-3">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1 text-primary">{{ booking.facility.name }}</h5>
-            <small class="text-muted">{{ booking.starttime|date:"M d, H:i" }}</small>
-        </div>
-        <p class="mb-1">Member: <strong>{{ booking.member.surname }}</strong></p>
-        <small class="badge bg-info text-dark">{{ booking.slots }} Slots (30 mins each)</small>
-    </div>
-    {% endfor %}
-</div>
+{% block content %}
+  <div>
+    <h1>Schedule & Bookings</h1>
+    <ul>
+      {% for booking in bookings %}
+        <li>{{ booking.facid__name }} - {{ booking.count_facid }}</li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}
+
+

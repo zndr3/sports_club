@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Members | Sports Club{% endblock %}
+
+{% block content %}
+  <div>
+    <h1>Members</h1>
+    <ul>
+      {% for member in members %}
+        <li>{{ member.firstname }} {{ member.surname }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
