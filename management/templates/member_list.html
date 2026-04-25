@@ -3,12 +3,31 @@
 {% block title %}Members | Sports Club{% endblock %}
 
 {% block content %}
-  <div>
-    <h1>Members</h1>
-    <ul>
-      {% for member in members %}
-        <li>{{ member.firstname }} {{ member.surname }}</li>
-      {% endfor %}
-    </ul>
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row  justify-content-between">
+        <h1>Members</h1>
+        <a href="{% url 'member_create' %}" class="btn btn-primary">Add New Member</a>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th scope="col">Name</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+                <tr>
+                <td>{{ member.firstname }} {{ member.surname }}</td>
+                <td>
+                    <a href="{% url 'member_update' member.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'member_delete' member.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
   </div>
 {% endblock %}
