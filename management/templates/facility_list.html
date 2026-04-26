@@ -4,15 +4,37 @@
   Sports Club - List of all facilities
 {% endblock %}
 
-
 {% block content %}
-  <div>
-    <h1>Facilities</h1>
-    <ul>
-      {% for x in facilities %}
-        <li>{{ x.name }}</li>
-      {% endfor %}
-    </ul>
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row  justify-content-between">
+        <h1>Facilities</h1>
+        <a href="{% url 'facility_create' %}" class="btn btn-primary">Add New Facility</a>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Member Cost</th>
+            <th scope="col">Guest Cost</th>
+            <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facility in facilities %}
+                <tr>
+                <td>{{ facility.name }}</td>
+                <td>{{ facility.membercost }}</td>
+                <td>{{ facility.guestcost }}</td>
+                <td>
+                    <a href="{% url 'facility_update' facility.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'facility_delete' facility.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
   </div>
 {% endblock %}
 

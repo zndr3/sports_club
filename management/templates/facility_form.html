@@ -1,0 +1,11 @@
+<div class="container">
+    <h2>{% if edit_mode %}Edit{% else %}Add{% endif %} Facility</h2>
+    
+    <form method="post">
+        {% csrf_token %} <div class="mb-3">
+            {{ form.as_p }} </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a href="{% url 'facility_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

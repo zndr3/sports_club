@@ -4,39 +4,21 @@ from django.template import loader
 from .models import Member, Facility, Booking
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import MemberForm
+from .forms import MemberForm, FacilityForm
 
 def member_list(request):
     members = Member.objects.all() # No need for .values() if using dots in templates
     return render(request, 'member_list.html', {'members': members})
 
-from django.db.models import Max
-
 def member_create(request):
-    if request.method == "POST":
-        form = MemberForm(request.POST)
-        if form.is_valid():
-            # commit=False creates the object but doesn't send it to Supabase yet
-            new_member = form.save(commit=False)
-
-            # 1. Find the current highest memid in your table
-            # If the table is empty, start at 0
-            highest_id = Member.objects.aggregate(Max('memid'))['memid__max'] or 0
-
-            # 2. Manually set the ID to the next available number
-            new_member.memid = highest_id + 1
-            # 3. Now send it to Supabase
-            new_member.save()
-            return redirect('member_list')
-    else:
-        form = MemberForm()
+    form = MemberForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        form.save() 
+        return redirect('member_list')
     return render(request, 'member_form.html', {'form': form})
 
-
 def member_update(request, pk):
-    # 'pk' stands for Primary Key (the memid)
     member = get_object_or_404(Member, pk=pk)
-    
     if request.method == "POST":
         form = MemberForm(request.POST, instance=member)
         if form.is_valid():
@@ -46,7 +28,6 @@ def member_update(request, pk):
         form = MemberForm(instance=member)
     return render(request, 'member_form.html', {'form': form, 'edit_mode': True})
 
-
 def member_delete(request, pk):
     member = get_object_or_404(Member, pk=pk)
     if request.method == "POST":
@@ -54,11 +35,34 @@ def member_delete(request, pk):
         return redirect('member_list')
     return render(request, 'member_confirm_delete.html', {'member': member})
 
-
-
 def facility_list(request):
-    facilities = Facility.objects.all() # No need for .values() if using dots in templates
+    facilities = Facility.objects.all()
     return render(request, 'facility_list.html', {'facilities': facilities})
+
+def facility_create(request):
+    form = FacilityForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        form.save() 
+        return redirect('facility_list')
+    return render(request, 'facility_form.html', {'form': form})
+
+def facility_update(request, pk):
+    facility = get_object_or_404(Facility, pk=pk)
+    if request.method == "POST":
+        form = FacilityForm(request.POST, instance=facility)
+        if form.is_valid():
+            form.save()
+            return redirect('facility_list')
+    else:
+        form = FacilityForm(instance=facility)
+    return render(request, 'facility_form.html', {'form': form, 'edit_mode': True})
+
+def facility_delete(request, pk):
+    facility = get_object_or_404(Facility, pk=pk)
+    if request.method == "POST":
+        facility.delete()
+        return redirect('facility_list')
+    return render(request, 'facility_confirm_delete.html', {'facility': facility})
 
 def booking_list(request):
   bookings = Booking.objects.values('facid__name').annotate(count_facid=Count('facid')).order_by('facid__name')  
