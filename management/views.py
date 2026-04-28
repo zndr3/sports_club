@@ -1,10 +1,9 @@
-from multiprocessing import context
 from django.db.models import Count
 from django.template import loader
 from .models import Member, Facility, Booking
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import MemberForm, FacilityForm
+from .forms import MemberForm, FacilityForm, BookingForm
 
 def member_list(request):
     members = Member.objects.all() # No need for .values() if using dots in templates
@@ -64,9 +63,61 @@ def facility_delete(request, pk):
         return redirect('facility_list')
     return render(request, 'facility_confirm_delete.html', {'facility': facility})
 
+# def booking_list(request):
+#   bookings = Booking.objects.values('facid__name').annotate(count_facid=Count('facid')).order_by('facid__name')  
+#   return render(request, 'booking_list.html', {'bookings': bookings})
+
+
+def booking_by_facility(request, facid):
+    bookings = (
+        Booking.objects
+        .filter(facid_id=facid)
+        .select_related('facid', 'memid')
+        .order_by('starttime')
+    )
+
+    return render(request, 'booking_by_facility.html', {
+        'bookings': bookings,
+        'facility_id': facid
+    })
+
 def booking_list(request):
-  bookings = Booking.objects.values('facid__name').annotate(count_facid=Count('facid')).order_by('facid__name')  
-  return render(request, 'booking_list.html', {'bookings': bookings})
+    # Get all facilities with their booking counts using proper related objects
+    facilities = Facility.objects.annotate(
+        total=Count('booking')
+    ).order_by('name')
+
+    return render(request, 'booking_list.html', {'facilities': facilities})
+
+def booking_create(request):
+    form = BookingForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect('booking_list')
+
+    return render(request, 'booking_form.html', {'form': form})
+
+def booking_update(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+
+    form = BookingForm(request.POST or None, instance=booking)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect('booking_by_facility', facid=booking.facid_id)
+
+    return render(request, 'booking_form.html', {'form': form, 'edit_mode': True})
+
+def booking_delete(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+    facid = booking.facid_id
+
+    if request.method == "POST":
+        booking.delete()
+        return redirect('booking_by_facility', facid=facid)
+
+    return render(request, 'booking_confirm_delete.html', {'booking': booking})
 
 def main(request):
     # Context dictionary to pass data to the HTML

@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 class Member(models.Model):
     memid = models.AutoField(primary_key=True)
     firstname = models.CharField(max_length=200)
@@ -29,7 +26,11 @@ class Facility(models.Model):
         return self.name
 
 class Booking(models.Model):
-    facid = models.ForeignKey(Facility, on_delete=models.CASCADE)
-    memid = models.ForeignKey(Member, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
+    facid = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='booking')
+    memid = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='booking')
     starttime = models.DateTimeField()
     slots = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.memid} - {self.facid} at {self.starttime}"

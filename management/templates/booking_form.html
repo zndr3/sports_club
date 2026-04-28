@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if edit_mode %}Edit{% else %}New{% endif %} Booking | Sports Club{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>{% if edit_mode %}Edit{% else %}Create{% endif %} Booking</h2>
+  
+  <form method="post">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+      <label for="id_memid" class="form-label">Member</label>
+      {{ form.memid }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_facid" class="form-label">Facility</label>
+      {{ form.facid }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_starttime" class="form-label">Start Time</label>
+      {{ form.starttime }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_slots" class="form-label">Slots</label>
+      {{ form.slots }}
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
