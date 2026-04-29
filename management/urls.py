@@ -1,5 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework.routers import DefaultRouter
+from .api_views import BookingViewSet, FacilityViewSet, MemberViewSet
+
+router = DefaultRouter()
+router.register('bookings', BookingViewSet)
+router.register('facilities', FacilityViewSet)
+router.register('members', MemberViewSet)
 
 urlpatterns = [
     path('', views.main, name='main'),
@@ -21,7 +28,7 @@ urlpatterns = [
     path('facilities/edit/<int:pk>/', views.facility_update, name='facility_update'),
     path('facilities/delete/<int:pk>/', views.facility_delete, name='facility_delete'),
 
-
+    path('api/', include(router.urls)),
 
     
 ]
