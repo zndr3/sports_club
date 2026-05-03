@@ -1,38 +1,67 @@
 {% extends 'base.html' %}
 
-{% block title %}Bookings by Facility | Sports Club{% endblock %}
+{% block title %}Bookings | Sports Club{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="d-flex flex-row justify-content-between align-items-center mb-4">
-    <h2>Bookings</h2>
-    <a href="{% url 'booking_create' %}" class="btn btn-primary">Add New Booking</a>
-  </div>
-
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Member</th>
-        <th scope="col">Start Time</th>
-        <th scope="col">Slots</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for b in bookings %}
-      <tr>
-        <td>{{ b.memid }}</td>
-        <td>{{ b.starttime }}</td>
-        <td>{{ b.slots }}</td>
-        <td>
-          <a href="{% url 'booking_update' b.id %}" class="btn btn-sm btn-warning">Edit</a>
-          <a href="{% url 'booking_delete' b.id %}" class="btn btn-sm btn-danger">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  
-  <a href="{% url 'booking_list' %}" class="btn btn-secondary">Back to Facilities</a>
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+        <h1>Bookings</h1>
+        <p class="subtitle">Manage facility bookings</p>
+    </div>
+    <a href="{% url 'booking_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> New Booking
+    </a>
 </div>
+
+{% if bookings %}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Start Time</th>
+                <th>Slots</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in bookings %}
+            <tr>
+                <td>
+                    <strong>{{ b.memid }}</strong>
+                </td>
+                <td>
+                    <small>{{ b.starttime|date:"M d, Y - H:i" }}</small>
+                </td>
+                <td>
+                    <span class="badge bg-secondary">{{ b.slots }}</span>
+                </td>
+                <td>
+                    <div class="btn-group-sm">
+                        <a href="{% url 'booking_update' b.pk %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'booking_delete' b.pk %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<a href="{% url 'booking_list' %}" class="btn btn-secondary mt-3">
+    <i class="fas fa-arrow-left"></i> Back to Facilities
+</a>
+{% else %}
+<div class="empty-state">
+    <i class="fas fa-calendar-alt"></i>
+    <h3>No Bookings Yet</h3>
+    <p>There are no bookings for this facility.</p>
+    <a href="{% url 'booking_create' %}" class="btn btn-primary mt-3">
+        <i class="fas fa-plus"></i> Create Booking
+    </a>
+</div>
+{% endif %}
 {% endblock %}

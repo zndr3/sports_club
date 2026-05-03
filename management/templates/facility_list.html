@@ -1,40 +1,69 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}
-  Sports Club - List of all facilities
-{% endblock %}
+{% block title %}Facilities | Sports Club{% endblock %}
 
 {% block content %}
-  <div class="d-flex flex-column">
-    <div class="d-flex flex-row  justify-content-between">
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
         <h1>Facilities</h1>
-        <a href="{% url 'facility_create' %}" class="btn btn-primary">Add New Facility</a>
+        <p class="subtitle">Manage your club facilities</p>
     </div>
-    
-    <table class="table table-striped">
+    <a href="{% url 'facility_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add New Facility
+    </a>
+</div>
+
+{% if facilities %}
+<div class="table-responsive">
+    <table class="table table-hover">
         <thead>
             <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Member Cost</th>
-            <th scope="col">Guest Cost</th>
-            <th scope="col">Actions</th>
+                <th>Facility Name</th>
+                <th>Member Cost</th>
+                <th>Guest Cost</th>
+                <th>Monthly Maintenance</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for facility in facilities %}
-                <tr>
-                <td>{{ facility.name }}</td>
-                <td>{{ facility.membercost }}</td>
-                <td>{{ facility.guestcost }}</td>
+            <tr>
                 <td>
-                    <a href="{% url 'facility_update' facility.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="{% url 'facility_delete' facility.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    <strong>{{ facility.name }}</strong>
                 </td>
-                </tr>
+                <td>
+                    <span class="badge bg-success">£{{ facility.membercost }}</span>
+                </td>
+                <td>
+                    <span class="badge bg-info">£{{ facility.guestcost }}</span>
+                </td>
+                <td>
+                    £{{ facility.monthlymaintenance }}
+                </td>
+                <td>
+                    <div class="btn-group-sm">
+                        <a href="{% url 'facility_update' facility.pk %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'facility_delete' facility.pk %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
-
     </table>
-  </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <i class="fas fa-building"></i>
+    <h3>No Facilities Yet</h3>
+    <p>Create your first facility to get started.</p>
+    <a href="{% url 'facility_create' %}" class="btn btn-primary mt-3">
+        <i class="fas fa-plus"></i> Create Facility
+    </a>
+</div>
+{% endif %}
 {% endblock %}
 

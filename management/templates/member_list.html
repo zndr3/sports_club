@@ -3,67 +3,64 @@
 {% block title %}Members | Sports Club{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column">
-
-    <div class="d-flex flex-row justify-content-between">
+<div class="page-header d-flex justify-content-between align-items-center">
+    <div>
         <h1>Members</h1>
-        <a href="{% url 'member_create' %}" class="btn btn-primary">Add New Member</a>
+        <p class="subtitle">Manage your club members</p>
     </div>
+    <a href="{% url 'member_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add New Member
+    </a>
+</div>
 
-    <table class="table table-striped mt-3">
+{% if members %}
+<div class="table-responsive">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Contact</th>
+                <th>Join Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
-
-        <tbody id="member-table-body">
+        <tbody>
+            {% for member in members %}
             <tr>
-                <td colspan="2">Loading...</td>
+                <td>
+                    <strong>{{ member.firstname }} {{ member.surname }}</strong>
+                </td>
+                <td>
+                    <small class="text-muted">
+                        <i class="fas fa-phone"></i> {{ member.telephone }}
+                    </small>
+                </td>
+                <td>
+                    <small>{{ member.joindate|date:"M d, Y" }}</small>
+                </td>
+                <td>
+                    <div class="btn-group-sm">
+                        <a href="{% url 'member_update' member.pk %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'member_delete' member.pk %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
-
 </div>
-{% endblock %}
-
-
-{% block extra_js %}
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    fetch("http://127.0.0.1:8000/api/members/")
-        .then(res => res.json())
-        .then(data => {
-
-            const tbody = document.getElementById("member-table-body");
-            tbody.innerHTML = "";
-
-            // handle pagination or normal list
-            const members = data.results || data;
-
-            members.forEach(member => {
-                const row = document.createElement("tr");
-
-                row.innerHTML = `
-                    <td>${member.firstname} ${member.surname}</td>
-                    <td>
-                        <a href="/members/update/${member.id}/" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="/members/delete/${member.id}/" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                `;
-
-                tbody.appendChild(row);
-            });
-        })
-        .catch(err => {
-            console.error("Failed to load members:", err);
-
-            const tbody = document.getElementById("member-table-body");
-            tbody.innerHTML = "<tr><td colspan='2'>Error loading data</td></tr>";
-        });
-
-});
-</script>
+{% else %}
+<div class="empty-state">
+    <i class="fas fa-users"></i>
+    <h3>No Members Yet</h3>
+    <p>Start by adding your first member to the club.</p>
+    <a href="{% url 'member_create' %}" class="btn btn-primary mt-3">
+        <i class="fas fa-plus"></i> Add First Member
+    </a>
+</div>
+{% endif %}
 {% endblock %}

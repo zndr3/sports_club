@@ -1,9 +1,139 @@
-<!DOCTYPE html>
-<html>
-<body>
+{% extends 'base.html' %}
 
-<h1>Hello World!</h1>
-<p>Welcome to Sports Club Management!</p>
+{% block title %}Dashboard | Sports Club{% endblock %}
 
-</body>
-</html>
+{% block content %}
+<div class="page-header mb-4">
+    <h1>Welcome to Sports Club Management</h1>
+    <p class="subtitle">Manage your facilities, members, and bookings</p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card shadow h-100">
+            <div class="card-body text-center">
+                <div style="font-size: 2.5rem; color: #3498db; margin-bottom: 1rem;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="card-title">Members</h3>
+                <p class="text-muted mb-3">Manage member profiles and information</p>
+                <a href="{% url 'member_list' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-arrow-right"></i> View Members
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow h-100">
+            <div class="card-body text-center">
+                <div style="font-size: 2.5rem; color: #27ae60; margin-bottom: 1rem;">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3 class="card-title">Facilities</h3>
+                <p class="text-muted mb-3">Manage club facilities and pricing</p>
+                <a href="{% url 'facility_list' %}" class="btn btn-success btn-sm">
+                    <i class="fas fa-arrow-right"></i> View Facilities
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow h-100">
+            <div class="card-body text-center">
+                <div style="font-size: 2.5rem; color: #f39c12; margin-bottom: 1rem;">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="card-title">Bookings</h3>
+                <p class="text-muted mb-3">Schedule and manage facility bookings</p>
+                <a href="{% url 'booking_list' %}" class="btn btn-warning btn-sm">
+                    <i class="fas fa-arrow-right"></i> View Bookings
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Quick Start Guide</h5>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="accordionQuickStart">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                <i class="fas fa-users me-2"></i> Adding Members
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionQuickStart">
+                            <div class="accordion-body">
+                                <p>Go to the <strong>Members</strong> section and click <strong>"Add New Member"</strong>. Fill in their details including name, contact information, and join date. You can also add referrals.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                <i class="fas fa-building me-2"></i> Creating Facilities
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionQuickStart">
+                            <div class="accordion-body">
+                                <p>Navigate to <strong>Facilities</strong> and click <strong>"Add New Facility"</strong>. Set the facility name, member cost, guest cost, and monthly maintenance fees.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                <i class="fas fa-calendar-alt me-2"></i> Booking a Facility
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionQuickStart">
+                            <div class="accordion-body">
+                                <p>Go to <strong>Bookings</strong> and click <strong>"New Booking"</strong>. Select a member, facility, start time, and number of slots. Confirm to save the booking.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5><i class="fas fa-lightbulb"></i> Tips &amp; Tricks</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Sort your members</strong> by join date to find recent signups
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Set competitive pricing</strong> for different membership tiers
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Monitor bookings</strong> to track facility usage and demand
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Track referrals</strong> using the recommendation feature
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong>Review maintenance costs</strong> regularly for profitability
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
