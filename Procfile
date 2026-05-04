@@ -1,1 +1,1 @@
-web: gunicorn sports-club.wsgi
+web: gunicorn sports_club.wsgi
