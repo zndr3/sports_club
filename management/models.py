@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 class Member(models.Model):
     memid = models.AutoField(primary_key=True)
@@ -26,11 +27,11 @@ class Facility(models.Model):
         return self.name
 
 class Booking(models.Model):
-    id = models.AutoField(primary_key=True)
-    facid = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='booking')
-    memid = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='booking')
+    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False)
+    facid = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='bookings')
+    memid = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='member_bookings')
     starttime = models.DateTimeField()
-    slots = models.IntegerField()
+    slots = models.IntegerField(validators=[MinValueValidator(1, 'Slots must be at least 1')])
 
     def __str__(self):
         return f"{self.memid} - {self.facid} at {self.starttime}"

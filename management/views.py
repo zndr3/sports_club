@@ -84,7 +84,7 @@ def booking_by_facility(request, facid):
 def booking_list(request):
     # Get all facilities with their booking counts using proper related objects
     facilities = Facility.objects.annotate(
-        total=Count('booking')
+        total=Count('bookings')
     ).order_by('name')
 
     return render(request, 'booking_list.html', {'facilities': facilities})
@@ -93,8 +93,11 @@ def booking_create(request):
     form = BookingForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
-        form.save()
-        return redirect('booking_list')
+        try:
+            form.save()
+            return redirect('booking_list')
+        except Exception as e:
+            form.add_error(None, f"Error saving booking: {str(e)}")
 
     return render(request, 'booking_form.html', {'form': form})
 
@@ -104,8 +107,11 @@ def booking_update(request, pk):
     form = BookingForm(request.POST or None, instance=booking)
 
     if request.method == "POST" and form.is_valid():
-        form.save()
-        return redirect('booking_by_facility', facid=booking.facid_id)
+        try:
+            form.save()
+            return redirect('booking_by_facility', facid=booking.facid_id)
+        except Exception as e:
+            form.add_error(None, f"Error saving booking: {str(e)}")
 
     return render(request, 'booking_form.html', {'form': form, 'edit_mode': True})
 
