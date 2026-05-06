@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "sports-club-qn23.onrender.com",
+    config('URL'),
     "localhost",
     "127.0.0.1"
 ]
