@@ -125,6 +125,10 @@ def booking_delete(request, pk):
 
     return render(request, 'booking_confirm_delete.html', {'booking': booking})
 
+def api_members(request):
+    """Display members from DRF API endpoint"""
+    return render(request, 'api_members.html')
+
 def main(request):
     # Context dictionary to pass data to the HTML
     context = {

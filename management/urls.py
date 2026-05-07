@@ -19,6 +19,7 @@ urlpatterns = [
 
 
     path('members/', views.member_list, name='member_list'),
+    path('members/api/', views.api_members, name='api_members'),
     path('members/add/', views.member_create, name='member_create'),
     path('members/edit/<int:pk>/', views.member_update, name='member_update'),
     path('members/delete/<int:pk>/', views.member_delete, name='member_delete'),
