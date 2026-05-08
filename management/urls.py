@@ -25,6 +25,7 @@ urlpatterns = [
     path('members/delete/<int:pk>/', views.member_delete, name='member_delete'),
 
     path('facilities/', views.facility_list, name='facility_list'),
+    path('facilities/api/', views.api_facilities, name='api_facilities'),
     path('facilities/add/', views.facility_create, name='facility_create'),
     path('facilities/edit/<int:pk>/', views.facility_update, name='facility_update'),
     path('facilities/delete/<int:pk>/', views.facility_delete, name='facility_delete'),

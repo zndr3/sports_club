@@ -129,6 +129,10 @@ def api_members(request):
     """Display members from DRF API endpoint"""
     return render(request, 'api_members.html')
 
+def api_facilities(request):
+    """Display facilities from DRF API endpoint"""
+    return render(request, 'api_facilities.html')
+
 def main(request):
     # Context dictionary to pass data to the HTML
     context = {
